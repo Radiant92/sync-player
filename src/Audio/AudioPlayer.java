@@ -7,12 +7,14 @@ import java.io.IOException;
 public class AudioPlayer {
     private AudioInputStream audioInputStream;
     private Clip clip;
-    private long currentFrame;
 
     public AudioPlayer() {
     }
 
     public void loadTrack(File file) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        if (this.clip != null) {
+            this.clip.stop();
+        }
         this.audioInputStream = AudioSystem.getAudioInputStream(file);
         this.clip = AudioSystem.getClip();
         this.clip.open(this.audioInputStream);
@@ -24,22 +26,22 @@ public class AudioPlayer {
 
     public void pause() {
         clip.stop();
-        currentFrame = clip.getMicrosecondPosition();
     }
 
     public void stop() {
-        currentFrame = 0l;
         clip.stop();
         clip.close();
     }
 
     public void play() {
-        if (clip != null){
+        if (clip != null) {
             clip.start();
         }
     }
 
-    public void jump(long frame) {
+    public void jump(long frame) throws LineUnavailableException, IOException {
+        clip.stop();
         clip.setMicrosecondPosition(frame);
+        play();
     }
 }
