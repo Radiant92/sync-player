@@ -7,6 +7,7 @@ import java.io.IOException;
 public class AudioPlayer {
     private AudioInputStream audioInputStream;
     private Clip clip;
+    private String state = "stopped";
 
     public AudioPlayer() {
     }
@@ -14,6 +15,7 @@ public class AudioPlayer {
     public void loadTrack(File file) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         if (this.clip != null) {
             this.clip.stop();
+            state = "stopped";
         }
         this.audioInputStream = AudioSystem.getAudioInputStream(file);
         this.clip = AudioSystem.getClip();
@@ -26,16 +28,19 @@ public class AudioPlayer {
 
     public void pause() {
         clip.stop();
+        state = "stopped";
     }
 
     public void stop() {
         clip.stop();
         clip.close();
+        state = "stopped";
     }
 
     public void play() {
         if (clip != null) {
             clip.start();
+            state = "playing";
         }
     }
 
@@ -43,5 +48,10 @@ public class AudioPlayer {
         clip.stop();
         clip.setMicrosecondPosition(frame);
         play();
+        state = "playing";
+    }
+
+    public String getState() {
+        return state;
     }
 }

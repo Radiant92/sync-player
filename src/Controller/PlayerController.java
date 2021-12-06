@@ -1,4 +1,8 @@
+package Controller;
+
 import Audio.AudioPlayer;
+import Multicast.MulticastPublisher;
+import Multicast.MulticastReceiver;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -7,21 +11,26 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class main {
+public class PlayerController {
+
     public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        MulticastPublisher multicastPublisher = new MulticastPublisher();
+
+        MulticastReceiver receiver = new MulticastReceiver();
+        receiver.start();
+
         Scanner scanner = new Scanner(System.in);
         HashMap<String, File> files = new HashMap<String, File>();
         files.put("1", new File("C:/Users/Käyttäjä/Desktop/Distribuutti/sync-player/samplemusic/higher.wav").getAbsoluteFile());
         files.put("2", new File("C:/Users/Käyttäjä/Desktop/Distribuutti/sync-player/samplemusic/epic.wav").getAbsoluteFile());
-
         AudioPlayer audioPlayer = new AudioPlayer();
 
         long jumpToFrame;
         String trackId;
-
         String command;
         boolean isActive = true;
         while (isActive) {
+            System.out.println("Enter command");
             command = scanner.nextLine();
             switch (command) {
                 case "play":
@@ -48,6 +57,7 @@ public class main {
                     break;
                 case "exit":
                     isActive = false;
+                    receiver.leaveGroupAndCloseConnection();
                     break;
             }
         }
