@@ -13,12 +13,12 @@ public class MulticastPublisher {
     /**
      * used to introduce this node to others in the network and for stop & load commands which do not require exact
      * synchronization.
-     * @param message          acceptable messages: "stop" + playback frame, "load" + track identifier, "ip" + ip address
-     * @param lamportTimestamp to ensure events take place in correct order, since multiple nodes can simultaneously
-     *                         give out commands.
+     * @param message          acceptable messages: "stop" + playback frame, "load" + track identifier,
+     *                        "ip" + ip address, "play" + track identifier, "introduction" + identifier.
+     *                         messages are formatted as timestamp;command;additionalInfo
      * @throws IOException
      */
-    public void multicast(String message, long lamportTimestamp) throws IOException {
+    public void multicast(String message) throws IOException {
         socket = new DatagramSocket();
         group = InetAddress.getByName("230.0.0.0");
         buffer = message.getBytes();

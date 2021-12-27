@@ -3,6 +3,8 @@ package Controller;
 import Audio.AudioPlayer;
 import Multicast.MulticastPublisher;
 import Multicast.MulticastReceiver;
+import Network.AddressBook;
+import Network.Synchroniser;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -13,11 +15,19 @@ import java.util.Scanner;
 
 public class PlayerController {
 
-    public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException, IOException, InterruptedException {
         MulticastPublisher multicastPublisher = new MulticastPublisher();
-
         MulticastReceiver receiver = new MulticastReceiver();
+
+        AddressBook addressBook = new AddressBook();
+        Synchroniser synchroniser = new Synchroniser(addressBook);
+        synchroniser.start();
+
+        //own address
+        String address = "";
+        multicastPublisher.multicast(synchroniser.getTimestamp() + ";introduction;" + address);
         receiver.start();
+
 
         Scanner scanner = new Scanner(System.in);
         HashMap<String, File> files = new HashMap<String, File>();
@@ -57,7 +67,11 @@ public class PlayerController {
                     break;
                 case "exit":
                     isActive = false;
-                    receiver.leaveGroupAndCloseConnection();
+                    synchroniser.closeSyncronisation();
+                    receiver.closeConnection();
+                    break;
+                case "introduction":
+                    multicastPublisher.multicast("hello there");
                     break;
             }
         }

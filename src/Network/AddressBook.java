@@ -1,5 +1,6 @@
 package Network;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 public class AddressBook {
@@ -9,10 +10,9 @@ public class AddressBook {
         this.nodes = new HashMap<>();
     }
 
-    public void addNode(String identifier, boolean isNew) {
-        if (isNew || !nodes.containsKey(identifier)) {
+    //identical identifiers will reset the node.
+    public void addNode(String identifier) {
             nodes.put(identifier, new Node(identifier, 10));
-        }
     }
 
     public void removeNode(String identifier) {
@@ -29,7 +29,7 @@ public class AddressBook {
         return nodes.get(identifier);
     }
 
-    public HashMap<String, Node> getAllNodes() {
-        return nodes;
+    public Collection<Node> getAllNodes() {
+        return nodes.values();
     }
 }
