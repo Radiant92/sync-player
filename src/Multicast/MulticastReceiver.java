@@ -15,12 +15,10 @@ public class MulticastReceiver extends Thread {
     public void run() {
         System.out.println("multicast receiver running");
         try {
-            socket = new MulticastSocket(6789);
+            socket = new MulticastSocket(4445);
             mcastaddr = InetAddress.getByName("228.5.6.7");
-            group = new InetSocketAddress(mcastaddr, 4446);
-            netif = NetworkInterface.getByName("bge0");
 
-            socket.joinGroup(group, netif);
+            socket.joinGroup(mcastaddr);
 
             while (true) {
                 DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
@@ -38,7 +36,7 @@ public class MulticastReceiver extends Thread {
     }
 
     public void closeConnection() throws IOException {
-        socket.leaveGroup(group, netif);
+        socket.leaveGroup(mcastaddr);
         socket.close();
         System.out.println("Socket closed");
     }

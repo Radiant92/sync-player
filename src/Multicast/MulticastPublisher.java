@@ -22,7 +22,7 @@ public class MulticastPublisher {
         socket = new DatagramSocket();
         group = InetAddress.getByName("228.5.6.7");
         buffer = message.getBytes();
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, group, 6789);
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, group, 4445);
         socket.send(packet);
         socket.close();
     }

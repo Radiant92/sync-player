@@ -25,8 +25,8 @@ public class PlayerController {
 
         //own address
         String address = "";
-        multicastPublisher.multicast(synchroniser.getTimestamp() + ";introduction;" + address);
         receiver.start();
+        multicastPublisher.multicast(synchroniser.getTimestamp() + ";introduction;" + address);
 
 
         Scanner scanner = new Scanner(System.in);
@@ -72,6 +72,7 @@ public class PlayerController {
                     break;
                 case "intro":
                     multicastPublisher.multicast("hello there");
+                    multicastPublisher.multicast(synchroniser.getTimestamp() + ";introduction;" + address);
                     break;
             }
         }
