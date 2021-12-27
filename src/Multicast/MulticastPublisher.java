@@ -20,9 +20,9 @@ public class MulticastPublisher {
      */
     public void multicast(String message) throws IOException {
         socket = new DatagramSocket();
-        group = InetAddress.getByName("230.0.0.0");
+        group = InetAddress.getByName("228.5.6.7");
         buffer = message.getBytes();
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, group, 4446);
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, group, 6789);
         socket.send(packet);
         socket.close();
     }

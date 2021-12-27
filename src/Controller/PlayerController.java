@@ -70,7 +70,7 @@ public class PlayerController {
                     synchroniser.closeSyncronisation();
                     receiver.closeConnection();
                     break;
-                case "introduction":
+                case "intro":
                     multicastPublisher.multicast("hello there");
                     break;
             }
